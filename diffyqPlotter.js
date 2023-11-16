@@ -1,31 +1,6 @@
-const canvas = document.getElementById("canvas");
-const context = canvas.getContext("2d");
-
-const xDotInput = document.getElementById("xDot");
-    xDotInput.addEventListener("input", reset);
-const yDotInput = document.getElementById("yDot");
-    yDotInput.addEventListener("input", reset);
-const zDotInput = document.getElementById("zDot");
-    zDotInput.addEventListener("input", reset);
-const startButton = document.getElementById("startButton"); 
-    startButton.addEventListener("click", startStop);
-    let running = false;
-
-const w = canvas.width;
-const h = canvas.height;
-
-
-let xDot, yDot, zDot, x, y, z, t;
-let tail = [];
-
-let axLength = 4;  // maximum absolute value of both axes
 let speed = 20;    // computations per frame
 let dt = 0.002;    // time step per computation
-let initX = 1;
-let initY = 1;
-let initZ = 1;
 let tailLength = 100000;
-
 
 
 window.onload = (event) => {
@@ -40,16 +15,20 @@ window.onload = (event) => {
 
 function reset() {
     if (running) startStop();
-    tail = [initX,initY];
-    x = initX;
-    y = initY;
-    z = initZ;
+    tail = [Number(xInitInput.value),Number(yInitInput.value)];
+    x = Number(xInitInput.value);
+    y = Number(yInitInput.value);
+    z = Number(zInitInput.value);
     t = 0;
-    axLength = 4;
+    axLength = 1;
     context.restore();
     context.save();
     context.scale((w/2-1)/axLength, (h/2-1)/axLength);
+    rescale();
     context.lineWidth = 1/((w/2)/axLength)
+    context.clearRect(-axLength, -axLength, 2*axLength, 2*axLength);
+    drawAxes();
+    drawCursor();
 }
 
 function rescale() {
@@ -111,7 +90,7 @@ function drawCursor() {
     context.save();
 
     context.beginPath();
-    context.arc(x, y, 0.1, 0, 2*pi);
+    context.arc(x, y, axLength/50, 0, 2*pi);
     context.fillStyle = "cyan";
     context.fill();
     context.closePath();
@@ -167,6 +146,38 @@ function startStop() {
 function getCol(r, g, b) {
     return "rgb(" + r.toString() + " " + g.toString() + " " + b.toString() + ")";
 }
+
+//variables
+let running = false;
+let xDot, yDot, zDot, x, y, z, t, axLength;
+
+//html canvas stuff
+const canvas = document.getElementById("canvas");
+const context = canvas.getContext("2d");
+const w = canvas.width;
+const h = canvas.height;
+
+//function inputs
+const xDotInput = document.getElementById("xDot");
+    xDotInput.addEventListener("input", reset);
+const yDotInput = document.getElementById("yDot");
+    yDotInput.addEventListener("input", reset);
+const zDotInput = document.getElementById("zDot");
+    zDotInput.addEventListener("input", reset);
+
+//initial point inputs
+const xInitInput = document.getElementById("xInit");
+    xInitInput.addEventListener("input", reset);
+const yInitInput = document.getElementById("yInit");
+    yInitInput.addEventListener("input", reset);
+const zInitInput = document.getElementById("zInit");
+    zInitInput.addEventListener("input", reset);
+
+//button inputs
+const resetButton = document.getElementById("resetButton");
+    resetButton.addEventListener("click", reset);
+const startButton = document.getElementById("startButton"); 
+    startButton.addEventListener("click", startStop);
 
 function sin(x) { return Math.sin(x % (2*pi)); }
 function cos(x) { return Math.cos(x % (2*pi)); }
