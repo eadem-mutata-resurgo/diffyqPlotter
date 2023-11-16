@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <title>DiffyQ Plotter</title>
+  </head>
+
+  <body>
+    <div style="text-align: center;">
+
+      
+      <canvas id="canvas" 
+        width="500" height="500"
+        style="border:1px solid #000;">
+      </canvas>
+      </br>
+
+      <input  id="xDot" type="text" value = "3*(y-x)" size="30">
+      </br>
+      <input  id="yDot" type="text" value = "28*x-x*z-y" size="30">
+      </br>
+      <input  id="zDot" type="text" value = "x*y-(3/8)*z" size="30">
+      </br>
+      
+      <input  id="startButton" type="button" value="Start"/>
+      </br>
+
+      <script src="diffyqPlotter.js" id="module"></script>
+
+    </div>
+  </body>
+  
+</html>
